@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "appium:bundleId": "com.Imen.ecommerceApp",
+    "appium: deviceName": "iPhone 12 Pro Max",
+    "appium: udid": "E3280F00-85DE-4AA0-9586-B11914CFBFD5",
+    "appium:platformVersion": "18.5",
+    "appium: automationName": "XCUITest",
+    "appium: noReset": false,
+    "appium: startIPhoneServer": true,
+    "appium:newCommandTimeout": 300
+  }
+}

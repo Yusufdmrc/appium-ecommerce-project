@@ -2,7 +2,7 @@
     <parameter name="platform" value="IOS"/>
     <test name="Appium Project">
         <classes>
-            <class name="testRunners.runner"/>
+            <class name="testRunners.TestRunner"/>
         </classes>
     </test>
 </suite>

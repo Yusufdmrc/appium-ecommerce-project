@@ -4,9 +4,9 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
-        features ={"src/test/java/features"},
+        features ={"src/test/resources/features"},
         glue = {"stepDefinitions","utils"},
-        tags = "@register",
+        tags = "@login",
         plugin = {
                 "summary","pretty","html:Reports/CucumberReport/Reports.html"
         }

@@ -1,45 +1,101 @@
 package utils;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import utils.ConfigReader;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.ios.options.XCUITestOptions;
+import io.appium.java_client.remote.options.BaseOptions;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class DriverFactory {
+
     static AppiumDriver driver;
     static Properties properties;
-    static DesiredCapabilities capabilities;
+    static BaseOptions<?> capabilities;
+    static AppiumDriverLocalService service;
 
-    public static AppiumDriver initialize_Driver(String platform){
+    public static AppiumDriver initialize_Driver(String platform) {
+
         properties = ConfigReader.getProperties();
-        capabilities = new DesiredCapabilities();
-        if(platform.equals("Android")){
-            capabilities.setCapability("platformName","Android");
-            capabilities.setCapability("udid","emulator-5554");
-            capabilities.setCapability("appPackage","");
-            capabilities.setCapability("appActivity","");
-            capabilities.setCapability("automationName", "UiAutomator2");
+
+        startServer();
+
+        if (platform.equals("Android")) {
+
+            UiAutomator2Options androidOptions = new UiAutomator2Options();
+
+            androidOptions.setPlatformName("Android");
+            androidOptions.setUdid(properties.getProperty("androidUdid"));
+            androidOptions.setAppPackage(properties.getProperty("androidAppPackage"));
+            androidOptions.setAppActivity(properties.getProperty("androidAppActivity"));
+            androidOptions.setAutomationName("UiAutomator2");
+
+            capabilities = androidOptions;
+
         } else if (platform.equals("IOS")) {
-            capabilities.setCapability("platformName","IOS");
-            capabilities.setCapability("bundleId","com.Imen.ecommerceApp");
-            capabilities.setCapability("udid","E3280F00-85DE-4AA0-9586-B11914CFBFD5");
-            capabilities.setCapability("automationName", "XCUITest");
+
+            XCUITestOptions iosOptions = new XCUITestOptions();
+
+            iosOptions.setPlatformName("iOS");
+            iosOptions.setBundleId(properties.getProperty("iosBundleId"));
+            iosOptions.setUdid(properties.getProperty("iosUdid"));
+            iosOptions.setAutomationName("XCUITest");
+
+            capabilities = iosOptions;
+
+        } else {
+            throw new IllegalArgumentException("Unsupported platform: " + platform);
         }
+
         try {
-            driver = new AppiumDriver(new URL("http://127.0.0.1:4723"),capabilities);
+            String appiumServerUrl = properties.getProperty("appiumServerUrl");
+            driver = new AppiumDriver(new URL(appiumServerUrl), capabilities);
+
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid Appium server URL", e);
         }
-        int impWait =Integer.parseInt(properties.getProperty("implicityWait"));
-        driver.manage().timeouts().implicitlyWait(impWait, TimeUnit.SECONDS);
+
+        int impWait = Integer.parseInt(properties.getProperty("implicityWait"));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(impWait));
+
         return getDriver();
     }
-    public static AppiumDriver getDriver(){
-        return driver;
+
+    public static void startServer() {
+
+        String appiumJSPath = properties.getProperty("appiumJSPath");
+        String appiumIPAddress = properties.getProperty("appiumIPAddress");
+        int appiumPort = Integer.parseInt(properties.getProperty("appiumPort"));
+
+        service = new AppiumServiceBuilder()
+                .withAppiumJS(new File(appiumJSPath))
+                .withIPAddress(appiumIPAddress)
+                .usingPort(appiumPort)
+                .build();
+
+        service.start();
     }
 
+    public static void stopServer() {
+
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
+
+        if (service != null) {
+            service.stop();
+            service = null;
+        }
+    }
+
+    public static AppiumDriver getDriver() {
+        return driver;
+    }
 }

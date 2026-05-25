@@ -5,13 +5,13 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.ElementHelper;
+import utils.MobileActions;
 
 import java.time.Duration;
 
 public class LoginPage {
     private final AppiumDriver driver;
-    private final ElementHelper elementHelper;
+    private final MobileActions mobileActions;
 
     // Page Factory Elements with @FindBy annotations for iOS
     @FindBy(className = "XCUIElementTypeTextField")
@@ -29,7 +29,7 @@ public class LoginPage {
     public LoginPage(AppiumDriver driver) {
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver, Duration.ofSeconds(10)), this);
-        this.elementHelper = new ElementHelper(driver);
+        this.mobileActions = new MobileActions(driver);
     }
 
     public void enterEmail(String email) {
@@ -49,6 +49,6 @@ public class LoginPage {
 
 
     public boolean isLoginSuccessful() {
-        return elementHelper.checkVisible(homeScreenElement);
+        return mobileActions.checkVisible(homeScreenElement);
     }
 }

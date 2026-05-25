@@ -5,12 +5,12 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.ElementHelper;
+import utils.MobileActions;
 
 import java.time.Duration;
 
 public class RegisterPage {
-    private final ElementHelper elementHelper;
+    private final MobileActions mobileActions;
 
     @FindBy(id = "Sign Up")
     private WebElement goToRegisterScreenButton;
@@ -35,7 +35,7 @@ public class RegisterPage {
 
     public RegisterPage(AppiumDriver driver) {
         PageFactory.initElements(new AppiumFieldDecorator(driver, Duration.ofSeconds(10)), this);
-        this.elementHelper = new ElementHelper(driver);
+        this.mobileActions = new MobileActions(driver);
     }
 
     public void navigateToRegisterScreen() {
@@ -67,7 +67,7 @@ public class RegisterPage {
     }
 
     public boolean isRegistrationSuccessful() {
-        return elementHelper.checkVisible(homeScreenElement);
+        return mobileActions.checkVisible(homeScreenElement);
     }
 }
 

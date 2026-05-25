@@ -5,4 +5,10 @@
             <class name="testRunners.TestRunner"/>
         </classes>
     </test>
+
+    <test name="Appium Failed Tests Rerun">
+        <classes>
+            <class name="testRunners.FailedTestRunner"/>
+        </classes>
+    </test>
 </suite>

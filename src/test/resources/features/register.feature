@@ -13,4 +13,4 @@ Feature: Register
 
     Examples:
       | firstName | lastName | email                  | password |
-      | Yusuf     | Test     | yusuftest102@gmail.com | 123qwe   |
+      | Yusuf     | Test     | yusuftest103@gmail.com | 123qwe   |

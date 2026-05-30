@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "appium": {
+      "command": "bash",
+      "args": [
+        "-c",
+        "export PATH=/Users/yusuf/.nvm/versions/node/v22.22.3/bin:$PATH && npx -y appium-mcp@latest"
+      ],
+      "trust": true
+    }
+  }
+}

@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -15,20 +16,23 @@ public class RegisterPage {
     @FindBy(id = "Sign Up")
     private WebElement goToRegisterScreenButton;
 
-    @FindBy(xpath = "//XCUIElementTypeTextField[@value=\"First name\"]")
+    @iOSXCUITFindBy(iOSNsPredicate = "value == 'First name'")
     private WebElement firstNameInput;
 
-    @FindBy(xpath = "//XCUIElementTypeTextField[@value=\"Last name\"]")
+    @iOSXCUITFindBy(iOSNsPredicate = "value == 'Last name'")
     private WebElement lastNameInput;
 
-    @FindBy(xpath = "//XCUIElementTypeTextField[@value=\"Email\"]")
+    @iOSXCUITFindBy(iOSNsPredicate = "value == 'Email'")
     private WebElement emailInput;
 
-    @FindBy(className = "//XCUIElementTypeSecureTextField[@value=\"Password\"]" )
+    @iOSXCUITFindBy(iOSNsPredicate = "type == 'XCUIElementTypeSecureTextField' AND value == 'Password'")
     private WebElement passwordInput;
 
     @FindBy(id = "Sign Up")
     private WebElement registerButton;
+
+    @FindBy(id = "Sign In")
+    private WebElement goToLoginButton;
 
     @FindBy(id = "SUMMER SALE")
     private WebElement homeScreenElement;
@@ -40,6 +44,10 @@ public class RegisterPage {
 
     public void navigateToRegisterScreen() {
         goToRegisterScreenButton.click();
+    }
+
+    public void clickGoToLogin() {
+        goToLoginButton.click();
     }
 
     public void enterFirstName(String firstName) {

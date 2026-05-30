@@ -6,7 +6,7 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features ={"src/test/resources/features"},
         glue = {"stepDefinitions","utils"},
-        tags = "@login",
+        tags = "@register",
         plugin = {
                 "summary",
                 "pretty",
